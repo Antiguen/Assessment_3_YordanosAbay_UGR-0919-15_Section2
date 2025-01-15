@@ -12,30 +12,24 @@ function updateDisplay(value) {
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
     const value = button.getAttribute("data-value");
-
     if (value === "+" || value === "-" || value === "*" || value === "/") {
-      
       if (currentInput) {
-        if (firstOperand === null) {
-          firstOperand = parseFloat(currentInput);
+        if (firstOperand !== null) {
+          firstOperand = calculate(firstOperand, parseFloat(currentInput), operator);
         } else {
-          firstOperand = calculate(
-            firstOperand,
-            parseFloat(currentInput),
-            operator
-          );
+          firstOperand = parseFloat(currentInput);
         }
-        operator = value;
-        currentInput = "";
-        updateDisplay(firstOperand);
+        operator = value; // Set the new operator
+        currentInput = ""; // Clear current input for the next number
+        updateDisplay(firstOperand); // Update display with the first operand
       }
     } else {
-      
       currentInput += value;
       updateDisplay(currentInput);
     }
   });
 });
+
 function calculate(first, second, operator) {
   switch (operator) {
     case "+":
@@ -53,8 +47,7 @@ function calculate(first, second, operator) {
 equalsButton.addEventListener("click", () => {
   if (firstOperand !== null && currentInput) {
     const result = calculate(firstOperand, parseFloat(currentInput), operator);
-    updateDisplay(result);
-    
+    updateDisplay(result); 
     firstOperand = result;
     currentInput = "";
     operator = "";
